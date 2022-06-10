@@ -1,8 +1,8 @@
 package org.acme;
 
+import javax.enterprise.inject.spi.CDI;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Providers;
@@ -12,9 +12,6 @@ import java.lang.annotation.Annotation;
 import java.net.URI;
 
 public class MyRemoteServiceAuthFilter implements ClientRequestFilter {
-
-    @Context
-    Providers providers;
 
     private final String apiKey;
     private final String apiSecret;
@@ -31,6 +28,8 @@ public class MyRemoteServiceAuthFilter implements ClientRequestFilter {
         if (requestContext.hasEntity() ) {
             @SuppressWarnings("unchecked")
             MultivaluedMap<String, String> request = (MultivaluedMap<String, String>) requestContext.getEntity();
+
+            Providers providers = CDI.current().select(Providers.class).get();
 
             @SuppressWarnings("unchecked")
             MessageBodyWriter<Object> writer = (MessageBodyWriter<Object>) providers.getMessageBodyWriter(
