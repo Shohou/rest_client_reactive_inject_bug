@@ -28,7 +28,7 @@ public class MyRemoteService {
         return gateways.computeIfAbsent(serviceParam, param -> {
             try {
                 String url = ConfigProvider.getConfig().getOptionalValue("service." + serviceParam + ".url", String.class).orElse("https://reqbin.com");
-                String key = ConfigProvider.getConfig().getOptionalValue("service." + serviceParam + ".key", String.class).orElse(null);
+                String key = ConfigProvider.getConfig().getOptionalValue("service." + serviceParam + ".key", String.class).orElse("");
                 String secret = ConfigProvider.getConfig().getOptionalValue("service." + serviceParam + ".service", String.class).orElse(null);
 
                 return RestClientBuilder.newBuilder()
